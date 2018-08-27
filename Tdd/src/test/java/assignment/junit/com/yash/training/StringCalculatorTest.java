@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.logging.Logger;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -84,5 +86,15 @@ public class StringCalculatorTest {
 
 		Mockito.verify(logger).info("sum :3");
 	}
+	
+	@Test
+	public void shouldThrowExceptionIfNegativeNumberPassed(){
+		
+		exception.expect(RuntimeException.class);
+		exception.expectMessage("negative numbers are : [-2, -3]");
+		stringCalculator.add("1,-2,-3");
+	}
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
 }

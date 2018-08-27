@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 public class StringCalculator {
 
 	private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	
+
 	public int add(String inputString) {
 
 		int sum = 0;
-		
+
 		if (inputString.equals(" ")) {
 			logger.info("sum :" + sum);
 		} else {
@@ -22,13 +22,21 @@ public class StringCalculator {
 				delimiter = inputString.substring(2, 3);
 				inputString = inputString.substring(inputString.indexOf("\n") + 1);
 			}
+
 			String[] numbers = inputString.split(",|\n|" + delimiter);
 			List<String> numberString = Arrays.asList(numbers);
+
+			List<Integer> negativeNumbers = numberString.stream().map(n -> Integer.parseInt(n)).filter(n -> n < 0).collect(Collectors.toList());
+			if(negativeNumbers.size() > 0){
+				throw new RuntimeException("negative numbers are : " + negativeNumbers);
+			}
+
 			sum = numberString.stream().map(n -> Integer.parseInt(n)).filter(n -> n <= 1000).collect(Collectors.reducing((n1, n2) -> n1 + n2)).get();
 			logger.info("sum :" + sum);
 		}
-		
+
 		return sum;
 	}
+
 
 }
